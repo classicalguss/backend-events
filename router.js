@@ -17,6 +17,7 @@ router.get('/:id', (req, res) => {
     res.send(`Event ID: ${req.params.id}`);
 });
 
+let decoded;
 router.use(function(req, res, next) {
     if (!req.headers.authorization) {
         return res.status(401).json({ error: 'Unauthorized' });
@@ -25,11 +26,7 @@ router.use(function(req, res, next) {
     try {
         // Verify the token using RS256 algorithm
         let token = req.headers.authorization.split(' ')[1];
-        console.log(token);
-        console.log(publicKey);
-        const decoded = jwt.verify(token, publicKey, { algorithms: ['RS256'] });
-
-        console.log('Token is valid:', decoded);
+        decoded = jwt.verify(token, publicKey, { algorithms: ['RS256'] });
     } catch (err) {
         console.log(err.message);
         return res.status(401).json({ error: 'Unauthorized..' });
@@ -37,12 +34,12 @@ router.use(function(req, res, next) {
     next();
 });
 router.post('/', async (req, res) => {
-    const token = req.get('auth');
     try {
         // Create a new event using the request body
         const newEvent = new Event({
             name: req.body.name,
-            details: req.body.details
+            details: req.body.details,
+            user_id: decoded.aud
         });
 
         // Save the event to MongoDB
