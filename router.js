@@ -19,14 +19,12 @@ router.get('/:id', (req, res) => {
 
 let decoded;
 router.use(function(req, res, next) {
-    if (!req.headers.authorization) {
-        return res.status(401).json({ error: 'Unauthorized' });
-    }
-
     try {
         // Verify the token using RS256 algorithm
-        let token = req.headers.authorization.split(' ')[1];
-        decoded = jwt.verify(token, publicKey, { algorithms: ['RS256'] });
+        if (req.headers.authorization) {
+            let token = req.headers.authorization.split(' ')[1];
+            decoded = jwt.verify(token, publicKey, { algorithms: ['RS256'] });
+        }
     } catch (err) {
         console.log(err.message);
         return res.status(401).json({ error: 'Unauthorized..' });
@@ -39,7 +37,8 @@ router.post('/', async (req, res) => {
         const newEvent = new Event({
             name: req.body.name,
             details: req.body.details,
-            user_id: decoded.aud
+            user_id: decoded?.aud,
+            x_client_id: req.headers['x-client-id']
         });
 
         // Save the event to MongoDB
