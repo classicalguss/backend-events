@@ -5,12 +5,14 @@ const eventsRouter = require('./router');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const publicKey = fs.readFileSync('public-key.pem', 'utf8');
+import 'dotenv/config'
+var environment = process.env;
 
 
 const mongoose = require('mongoose');
 
 // Connect to MongoDB (Replace with your MongoDB connection string)
-mongoose.connect('mongodb://localhost:27017/businesspark', {
+mongoose.connect(`mongodb://${environment.MONGO_HOST}:27017/businesspark`, {
 })
     .then(() => console.log('MongoDB connected'))
     .catch((err) => console.log(err));
