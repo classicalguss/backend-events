@@ -33,13 +33,18 @@ router.use(function(req, res, next) {
 });
 router.post('/', async (req, res) => {
     try {
-        // Create a new event using the request body
-        const newEvent = new Event({
+        let payload = {
             name: req.body.name,
-            details: req.body.details,
+            x_client_id: req.headers['x-client-id'],
             user_id: decoded?.aud,
-            x_client_id: req.headers['x-client-id']
-        });
+            details: req.body.details
+        }
+
+        if (!payload.details) {
+            payload = mergePayload(payload);
+        }
+        // Create a new event using the request body
+        const newEvent = new Event(payload);
 
         // Save the event to MongoDB
         const savedEvent = await newEvent.save();
@@ -50,5 +55,11 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: 'Error creating event', error: error.message || error });
     }
 });
+
+function mergePayload(payload) {
+    const { action, user_id, x_client_id, ...details } = payload;
+    return { action, user_id, x_client_id, details };
+}
+
 
 module.exports = router;
