@@ -20,6 +20,10 @@ const eventSchema = new Schema({
         type: Number,
         required: false
     },
+    user: {
+        type: Mixed,
+        required: false
+    },
     x_client_id: {
         type: String,
         required: true
