@@ -7,6 +7,7 @@ const fs = require('fs');
 
 // Load your public key (ensure you have it in PEM format)
 const publicKey = fs.readFileSync('public-key.pem', 'utf8');
+const extraInfoCollector = require('./helpers/extraInfoCollector');
 
 // Define routes
 router.get('/', (req, res) => {
@@ -44,6 +45,7 @@ router.post('/', async (req, res) => {
         if (!payload.details) {
             payload = mergePayload(payload);
         }
+        payload = await extraInfoCollector(payload, req);
         // Create a new event using the request body
         const newEvent = new Event(payload);
 
@@ -53,6 +55,7 @@ router.post('/', async (req, res) => {
         // Send the saved event as a response
         res.status(201).json(savedEvent);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: 'Error creating event', error: error.message || error });
     }
 });
@@ -61,6 +64,5 @@ function mergePayload(payload) {
     const { action, user_id, x_client_id, ...details } = payload;
     return { action, user_id, x_client_id, details };
 }
-
 
 module.exports = router;

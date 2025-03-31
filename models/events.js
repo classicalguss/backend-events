@@ -27,6 +27,10 @@ const eventSchema = new Schema({
     x_client_id: {
         type: String,
         required: true
+    },
+    extra_details: {
+        type: Mixed,
+        required: false
     }
 });
 
