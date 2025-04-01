@@ -42,7 +42,7 @@ async function getZoneById(id, req) {
 
         // Fetch from API if not found in Redis
         const axios = require('axios');
-        const response = await axios.get(`${process.env.BACKEND_DOMAIN}/api/v1/zone/${id}`,{
+        const response = await axios.get(`${process.env.BACKEND_DOMAIN}/api/v1/zones/${id}`,{
             headers: {
                 "Authorization": req.get('authorization')
             }
