@@ -10,7 +10,7 @@ require('dotenv').config()
 const mongoose = require('mongoose');
 
 // Connect to MongoDB (Replace with your MongoDB connection string)
-mongoose.connect(`mongodb://${process.env.MONGO_HOST}:27017/businesspark`, {
+mongoose.connect(`mongodb://${process.env.MONGO_CONNECT_STRING}/businesspark`, {
 })
     .then(() => console.log('MongoDB connected'))
     .catch((err) => console.log(err));
