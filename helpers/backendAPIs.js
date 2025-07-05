@@ -106,14 +106,14 @@ async function getRentContractById(id, req) {
                 "Authorization": req.get('authorization')
             }
         });
-        const rentContractData = response.data.data;
+        const rentContractData = response.data;
 
         // Store in Redis with expiration (1 hour)
         await redisClient.set(cacheKey, JSON.stringify(rentContractData), { EX: 10400 });
 
         return rentContractData;
     } catch (error) {
-        console.error("Error fetching zone data:", error.message);
+        console.error("Error fetching rent contract data:", error.message);
         // throw error;
     }
 }
