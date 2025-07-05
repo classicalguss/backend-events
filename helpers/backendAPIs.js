@@ -90,7 +90,7 @@ async function getBoothId(id, req) {
 }
 
 async function getRentContractById(id, req) {
-    const cacheKey = `rentContract:${id}`;
+    const cacheKey = `rentContract2:${id}`;
 
     try {
         // Check Redis first
