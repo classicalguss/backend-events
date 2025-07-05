@@ -10,7 +10,7 @@ async function extraInfoCollector(payload, req) {
     } else if (payload.details.type === "building") {
         payload.extra_details = await getBoothId(payload.details.boothId, req)
     } else if (payload.details.type === "office") {
-        payload.extra_details = await getRentContractById(payload.details.boothId, req)
+        payload.extra_details = await getRentContractById(payload.details.officeId, req)
     }
 
     return payload;
