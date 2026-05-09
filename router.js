@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
         let payload = {
             name: req.body.name,
             x_client_id: req.headers['x-client-id'],
-            user_id: decoded?.aud,
+            user_id: decoded?.sub,
             user: decoded?.user,
             details: req.body.details
         }
