@@ -9,8 +9,12 @@ async function extraInfoCollector(payload, req) {
         payload.extra_details = await getZoneById(payload.details.zoneId, req);
     } else if (payload.details.type === "building") {
         payload.extra_details = await getBoothId(payload.details.boothId, req)
+    } else if (payload.details.type === "booth") {
+        payload.extra_details = await getBoothId(payload.details.boothId, req)
     } else if (payload.details.type === "office") {
+        console.log('coming here');
         payload.extra_details = await getRentContractById(payload.details.officeId, req)
+        console.log(payload);
     }
 
     return payload;
